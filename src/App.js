@@ -4,6 +4,7 @@ import { Query } from "react-apollo"
 import client from "./client"
 import { SEARCH_REPOSITORIES } from "./graphql"
 
+const PER_PAGE = 5
 const DEFAULT_STATE = {
     first: 5,
     after: null,
@@ -29,6 +30,15 @@ class App extends Component {
 
     handleSubmit(event) {
         event.preventDefault()
+    }
+
+    goNext(search) {
+        this.setState ({
+            first: PER_PAGE,
+            after: search.pageInfo.endCursor,
+            last: null,
+            before: null
+        })
     }
 
     render() {
@@ -59,12 +69,15 @@ class App extends Component {
                                         const node = edge.node
                                         return (
                                             <li key={node.id}>
-                                                <a href={node.url} target="_blank" rel="noopener">{node.name}</a>
+                                                <a href={node.url} target="_blank" rel="noopener noreferrer">{node.name}</a>
                                             </li>
                                         )
                                     })
                                 }
                             </ul>
+                            {search.pageInfo.hasNextPage && (
+                                <button onClick={this.goNext.bind(this, search)}>Next</button>
+                            )}
                         </React.Fragment>
                     )
                 }
