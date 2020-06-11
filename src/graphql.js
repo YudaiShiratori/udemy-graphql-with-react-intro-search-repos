@@ -38,6 +38,18 @@ export const ADD_STAR = gql`
     }
 `
 
+export const REMOVE_STAR = gql`
+    mutation removeStar ($input: RemoveStarInput!) {
+        removeStar (input: $input) {
+            starrable {
+                id
+                viewerHasStarred
+            }
+        }
+    }
+
+`
+
 export const ME = gql`
     query me {
         user(login: "iteachonudemy") {
